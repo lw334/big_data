@@ -46,9 +46,6 @@ STD = 4
 USER_FEATURES = [NUM_ASK, CATEGORIES, NUM_EXTENSION,
                  PNT_ASK, PNT_AWD_ASK, DURATION, QL_ASK]
 
-# question list
-QUESTION_FEATURES = ["q_feature_dict"]
-
 # category list
 CATEGORY_FEATURES = [CATE_POP]
 
@@ -92,10 +89,6 @@ class MRParseQuestions(MRJob):
         duration=float(question[AWARD_DATE])-float(question[CREAT_DATE])
         if duration < 0:
           duration = np.nan
-      feature_dict = {"q_asker": question[ASKER_ID], "q_category": question[CATE_ID],\
-                      "q_pnt_award": point_awd, "q_has_extension":int(question[EXTENSION_DATE] != ""),\
-                      "q_duration": duration}
-      yield question[Q_ID], ("q_feature_dict", feature_dict)
       yield question[ASKER_ID], (DURATION, duration)
       yield question[ASKER_ID], (QL_ASK, question[Q_ID])
       if question[CATE_ID] != "":
@@ -106,15 +99,13 @@ class MRParseQuestions(MRJob):
     dic = {NUM_ASK: 0, NUM_EXTENSION: 0, CATE_POP: 0}
     identity = IS_USER
     for key, val in l:
-      if key == "q_feature_dict":
-        identity = IS_QUESTION
-      elif key == CATE_POP:
+      if key == CATE_POP:
         identity = IS_CATE
       # for sums
       if key in [NUM_ASK, NUM_EXTENSION, CATE_POP]:
         dic[key] += val
       # don't use combiner
-      elif key in [CATEGORIES, QL_ASK, PNT_ASK, PNT_AWD_ASK, DURATION, "q_feature_dict"]:
+      elif key in [CATEGORIES, QL_ASK, PNT_ASK, PNT_AWD_ASK, DURATION]:
         yield obs, (key, val)
     if identity == IS_CATE:
       yield obs, (CATE_POP, dic[CATE_POP])
@@ -129,9 +120,7 @@ class MRParseQuestions(MRJob):
     identity = IS_USER
     cate_dic = {}
     for key, val in l:
-      if key == "q_feature_dict":
-        identity = IS_QUESTION
-      elif key == CATE_POP:
+      if key == CATE_POP:
         identity = IS_CATE
       # for sums
       if key in [NUM_ASK, NUM_EXTENSION, CATE_POP]:
@@ -143,8 +132,6 @@ class MRParseQuestions(MRJob):
           cate_dic[val] = cate_dic.get(val, 0) + 1
       elif key in [DURATION, PNT_ASK, PNT_AWD_ASK]:
         dic[key].append(val)
-      elif key in ["q_feature_dict"]:
-        yield obs, (key, val)
     if identity == IS_CATE:
       yield obs, (CATE_POP, dic[CATE_POP])
     elif identity == IS_USER:
