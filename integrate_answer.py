@@ -1,17 +1,21 @@
-from mr_parse_answers import MRParseAnswers
+from mr_parse_answer import MRParseAnswers
 import sys, json, csv
 
-# user list
-USER_FEATURES = ["u_num_answer", "u_qid_answer", "u_pnt_answer_avg",
-                "u_pnt_answer_mid", "u_pnt_answer_min",
-                "u_pnt_answer_max", "u_pnt_answer_std"]
+QUES_NUM_ANSWER = 0
+QUES_FIRST_ANS = 1
 
 # question list
-QUESTION_FEATURES = ["q_num_answer", "q_first_answerer"]
+QUESTION_FEATURES = [QUES_NUM_ANSWER, QUES_FIRST_ANS]
 
 if __name__ == '__main__':
     user_profile = {}
     question_profile = {}
+
+    f = open("data/user.csv", "r")
+    for line in f:
+        l = line.strip().split("|")
+        user_profile[l[0]] = l[1:] + [None]*7
+    f.close()
 
     job = MRParseAnswers(args=sys.argv[1:])
     with job.make_runner() as runner:
@@ -20,17 +24,18 @@ if __name__ == '__main__':
         for line in runner.stream_output():
             obs, (key, val) = job.parse_output_line(line)
             if key not in QUESTION_FEATURES:
-                user_profile[obs] = user_profile.get(obs, {})
+                if obs not in user_profile:
+                    user_profile[obs] = user_profile.get(obs, [None]*27)
                 user_profile[obs][key] = val
             else:
-                question_profile[obs] = question_profile.get(obs, {})
+                question_profile[obs] = question_profile.get(obs, [None]*2)
                 question_profile[obs][key] = val
 
-    json.dump(user_profile, open("data/user.txt","w"))
-    json.dump(question_profile, open("data/question.txt","w"))
-    with open('data/user.csv', 'wb') as f:
-        w = csv.writer(f)
-        w.writerows(user_profile.items())
-    with open('data/question.csv', 'wb') as f:
-        w = csv.writer(f)
-        w.writerows(question_profile.items())
+    with open('data/user.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, delimiter="|")
+        for i in user_profile:
+            wr.writerow([i]+user_profile[i])
+    with open('data/question.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, delimiter="|")
+        for i in question_profile:
+            wr.writerow([i]+question_profile[i])
