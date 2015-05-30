@@ -28,12 +28,13 @@ FREQ_CATE = 4
 DURATION = 5
 PNT_ASK = 10
 PNT_AWD_ASK = 15
-CATE_POP = 20
+# CATE_POP = 20
+QUES_DICT = 21
 
 # identities
 IS_USER = 0
 IS_QUES = 1
-IS_CATE = 2
+# IS_CATE = 2
 
 # feature helpers
 AVG = 0
@@ -46,8 +47,9 @@ STD = 4
 USER_FEATURES = [NUM_ASK, CATEGORIES, NUM_EXTENSION,
                  PNT_ASK, PNT_AWD_ASK, DURATION, QL_ASK]
 
+QUES_FEATURES = [QUES_DICT]
 # category list
-CATEGORY_FEATURES = [CATE_POP]
+# CATEGORY_FEATURES = [CATE_POP]
 
 # helper functions
 def list_helper(l):
@@ -91,39 +93,46 @@ class MRParseQuestions(MRJob):
           duration = np.nan
       yield question[ASKER_ID], (DURATION, duration)
       yield question[ASKER_ID], (QL_ASK, question[Q_ID])
-      if question[CATE_ID] != "":
-        yield question[CATE_ID], (CATE_POP, 1)
+      # if question[CATE_ID] != "":
+      #   yield question[CATE_ID], (CATE_POP, 1)
+      yield question[Q_ID], (QUES_DICT, [question[ASKER_ID],question[CATE_ID],point_awd])
 
   def combiner(self, obs, results):
     l = list(results)
-    dic = {NUM_ASK: 0, NUM_EXTENSION: 0, CATE_POP: 0}
+    dic = {NUM_ASK: 0, NUM_EXTENSION: 0} #CATE_POP: 0
     identity = IS_USER
     for key, val in l:
-      if key == CATE_POP:
-        identity = IS_CATE
+      if key in QUES_FEATURES:
+        identity = IS_QUES
+      # if key == CATE_POP:
+      #   identity = IS_CATE
       # for sums
-      if key in [NUM_ASK, NUM_EXTENSION, CATE_POP]:
+      if key in [NUM_ASK, NUM_EXTENSION]: #CATE_POP
         dic[key] += val
       # don't use combiner
-      elif key in [CATEGORIES, QL_ASK, PNT_ASK, PNT_AWD_ASK, DURATION]:
+      elif key in [CATEGORIES, QL_ASK, PNT_ASK, PNT_AWD_ASK, DURATION, QUES_DICT]:
         yield obs, (key, val)
-    if identity == IS_CATE:
-      yield obs, (CATE_POP, dic[CATE_POP])
-    elif identity == IS_USER:
+    # if identity == IS_CATE:
+    #   yield obs, (CATE_POP, dic[CATE_POP])
+    if identity == IS_USER:
       yield obs, (NUM_ASK, dic[NUM_ASK])
       yield obs, (NUM_EXTENSION, dic[NUM_EXTENSION])
 
   def reducer(self, obs, results):
     l = list(results)
-    dic = {NUM_ASK: 0, NUM_EXTENSION: 0, CATE_POP: 0,\
+    dic = {NUM_ASK: 0, NUM_EXTENSION: 0, \
+          #CATE_POP: 0,\
           DURATION:[], PNT_ASK:[], PNT_AWD_ASK:[], QL_ASK:[]}
     identity = IS_USER
     cate_dic = {}
     for key, val in l:
-      if key == CATE_POP:
-        identity = IS_CATE
+      if key in QUES_FEATURES:
+        identity = IS_QUES
+        yield obs, (key, val)
+      # if key == CATE_POP:
+      #   identity = IS_CATE
       # for sums
-      if key in [NUM_ASK, NUM_EXTENSION, CATE_POP]:
+      if key in [NUM_ASK, NUM_EXTENSION]: #CATE_POP
         dic[key] += val
       elif key in [QL_ASK]:
         dic[key] += [val]
@@ -132,9 +141,9 @@ class MRParseQuestions(MRJob):
           cate_dic[val] = cate_dic.get(val, 0) + 1
       elif key in [DURATION, PNT_ASK, PNT_AWD_ASK]:
         dic[key].append(val)
-    if identity == IS_CATE:
-      yield obs, (CATE_POP, dic[CATE_POP])
-    elif identity == IS_USER:
+    # if identity == IS_CATE:
+    #   yield obs, (CATE_POP, dic[CATE_POP])
+    if identity == IS_USER:
       for feature in [DURATION, PNT_ASK, PNT_AWD_ASK]:
         dic[feature] = filter(lambda x: x==x, dic[feature])
         dic[feature] = list_helper(dic[feature])

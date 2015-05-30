@@ -59,7 +59,6 @@ def read_question(filename, question_profile):
 		question_profile[i[Q_ID]]["points_awarded"] = float(i[POINTS_AWARDED])
 		question_profile[i[Q_ID]]["points_asker"] = float(i[POINTS_ASKER])
 		question_profile[i[Q_ID]]["category"] = i[CATE_ID]
-		question_profile[i[Q_ID]]["answer_dates"] = question_profile[i[Q_ID]].get("answer_dates", [])+[i[ANSWERDATE]]
 		
 
 #<---------------------------feature generation--------------------------------------->
@@ -70,6 +69,7 @@ def question_popularity(filename, question_profile):
 	for i in l:
 		question_profile[i[Q_ID]] = question_profile.get(i[Q_ID],{})
 		question_profile[i[Q_ID]]["num_answers"] = question_profile[i[Q_ID]].get("num_answers", 0)+1
+		question_profile[i[Q_ID]]["answer_dates"] = question_profile[i[Q_ID]].get("answer_dates", [])+[i[ANSWERDATE]]
 
 
 def num_questions_asked(data, user_profile):
@@ -191,18 +191,11 @@ def firstAnswers(data, user_profile, question_profile):
     	for answer in data[user]["answers"]:
     		q_id = data[user]["answers"][answer]["questionID"]
     		useranswerdate = data[user]["answers"][answer]["answerdate"]
-    		#some question the user answered are not in the dataset of questions for the
-    		#exploratory analysis
-    		try:
-    			dates = question_profile[q_id]["answer_dates"]
-    		except KeyError:
-    			pass
-    		if dates != None:
-    			first = min(dates)
-    		else:
-    			first = None
-    		if useranswerdate == first:
-    			user_profile["num1stanswer"].get("num1stanswer", 0) + 1
+    		if q_id in question_profile:
+	    		dates = question_profile[q_id]["answer_dates"]
+	    		first = min(dates)
+	    		if useranswerdate == first:
+	    			user_profile["num1stanswer"].get("num1stanswer", 0) + 1
 
 def categories_answer(data, user_profile, question_profile):
 	for user in data:
@@ -252,32 +245,28 @@ if __name__ == '__main__':
 	# read_question_data("part-00000_question", data)
 	# read_answer_data("part-00000_answer", data)
 
-	question_profile = {}
-	read_question("part-00000_question", question_profile)
-	question_popularity("part-00000_answer", question_profile)
+# 	question_profile = {}
+# 	read_question("part-00000_question", question_profile)
+	# question_popularity("part-00000_answer", question_profile)
 	
-	# data = json.load(open("data.txt"))
-	# question_profile = json.load((open("question.txt")))
-	# user_profile = {}
-	# num_questions_asked(data, user_profile)
+# 	num_questions_asked(data, user_profile)
 	# points_asking(data, user_profile, "points_asker")
 	# points_asking(data, user_profile, "points_awarded")
 	# extensions(data, user_profile)
 	# creation_award_period(data, user_profile)
 	# categories_ask(data, user_profile)
-	# popularity_ask(data, user_profile, question_profile)
-	# corr_award_point(data, user_profile, question_profile)
+	# # popularity_ask(data, user_profile, question_profile)
+	# # corr_award_point(data, user_profile, question_profile)
 	# create_answer_points(data, user_profile)
-	# firstAnswers(data, user_profile, question_profile)
-	# categories_answer(data, user_profile, question_profile)
-	# popularity_answer(data, user_profile, question_profile)
-	# corr_award_point_answer(data, user_profile, question_profile)
-
+	# # firstAnswers(data, user_profile, question_profile)
+	# # categories_answer(data, user_profile, question_profile)
+	# # popularity_answer(data, user_profile, question_profile)
+	# # corr_award_point_answer(data, user_profile, question_profile)
 
 # 	json.dump(data, open("data.txt","w"))
-# #   data = json.load(open("data.txt"))
-# # 	json.dump(user_profile, open("user.txt","w"))
+# 	data = json.load(open("data.txt"))
+# 	json.dump(user_profile, open("user.txt","w"))
 # 	user_profile = json.load(open("user.txt"))
-	json.dump(question_profile, open("question.txt","w"))
+# 	json.dump(question_profile, open("question.txt","w"))
 # 	question_profile = json.load(open("question.txt"))
 	pass
