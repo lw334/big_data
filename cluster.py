@@ -28,7 +28,7 @@ def read_data(filename, columns):
 def summary_statistics(df):
   summary=df.describe().T
   summary.rename(columns={'50%': 'median'}, inplace=True)
-  summary['mode']=Series(np.array([mode(df[var])[0][0] for var in list(df.columns.values)]), index=summary.index)
+  # summary['mode']=Series(np.array([mode(df[var])[0][0] for var in list(df.columns.values)]), index=summary.index)
   summary['cnt_missing']=len(df.index)-summary['count']
   to_drop = ['count']
   summary.drop(to_drop, axis=1, inplace=True)
@@ -146,14 +146,14 @@ if __name__ == '__main__':
   # df.to_csv(DIRECTORY+"user_clean.csv")
   X = preprocessing(df)
 
-  dbscan_labels = dbscan(X)
-  birch_labels = birchcluster(X)
-  kmean_labels = kmeans(X, 4)
-  mbk_labels = minibatchkmeans(X, 4)
+  # dbscan_labels = dbscan(X)
+  # birch_labels = birchcluster(X)
+  # kmean_labels = kmeans(X, 4)
+  # mbk_labels = minibatchkmeans(X, 4)
 
-  labels = [dbscan_labels, birch_labels, kmean_labels, mbk_labels]
-  importance = pd.DataFrame(columns=pd.Series(df.columns))
-  for i in range(len(labels)):
-    importance.loc[i] = tree(labels[i], X, df, i)
-  importance.to_csv(OUTPUT_DIRECTORY+"feature_importance.csv")
-  print importance
+  # labels = [dbscan_labels, birch_labels, kmean_labels, mbk_labels]
+  # importance = pd.DataFrame(columns=pd.Series(df.columns))
+  # for i in range(len(labels)):
+  #   importance.loc[i] = tree(labels[i], X, df, i)
+  # importance.to_csv(OUTPUT_DIRECTORY+"feature_importance.csv")
+  # print importance
