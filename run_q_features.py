@@ -1,7 +1,8 @@
 from q_features import QFeatures
 import sys, csv
 
-DIRECTORY = "data/"
+DIRECTORY = "/var/tmp/"
+#"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/
 

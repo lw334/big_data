@@ -5,7 +5,8 @@ NUM_ANSWER = 21
 FREQ_CATE_ANSWER = 30
 FREQ_CATE_ASK = 5
 
-DIRECTORY = "data/"
+DIRECTORY = "/var/tmp/"
+#"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/
 

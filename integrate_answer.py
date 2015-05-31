@@ -7,7 +7,8 @@ QUES_FIRST_ANS = 1
 # question list
 QUESTION_FEATURES = [QUES_NUM_ANSWER, QUES_FIRST_ANS]
 
-DIRECTORY = "data/"
+DIRECTORY = "/var/tmp/"
+#"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/
 
