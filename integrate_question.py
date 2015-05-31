@@ -29,7 +29,8 @@ if __name__ == '__main__':
             if key in QUES_FEATURES:
                 question_profile[obs] = val
             else:
-                user_profile[obs] = user_profile.get(obs, [None]*20)
+                if obs not in user_profile:
+                    user_profile[obs] = [None]*20
                 user_profile[obs][key] = val
 
     with open(DIRECTORY+'user.csv', 'wb') as myfile:

@@ -17,7 +17,8 @@ if __name__ == '__main__':
         
         for line in runner.stream_output():
             obs, (key, val) = job.parse_output_line(line)
-            user_profile[obs] = user_profile.get(obs, [None]*18)
+            if obs in user_profile:
+            	user_profile[obs] = [None]*18
             user_profile[obs][(key-NUM_FEATURES)] = val
 
     with open(DIRECTORY+"user1.csv",'r') as csvinput:

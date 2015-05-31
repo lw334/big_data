@@ -30,10 +30,11 @@ if __name__ == '__main__':
             obs, (key, val) = job.parse_output_line(line)
             if key not in QUESTION_FEATURES:
                 if obs not in user_profile:
-                    user_profile[obs] = user_profile.get(obs, [None]*27)
+                    user_profile[obs] = [None]*27
                 user_profile[obs][key] = val
             else:
-                question_profile[obs] = question_profile.get(obs, [None]*2)
+                if obs not in question_profile:
+                    question_profile[obs] = [None]*2
                 question_profile[obs][key] = val
 
     with open(DIRECTORY+'user.csv', 'wb') as myfile:
