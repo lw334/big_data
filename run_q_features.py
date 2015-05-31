@@ -23,14 +23,14 @@ if __name__ == '__main__':
             obs, val = job.parse_output_line(line)
             user_profile[obs] = val
 
-	with open(DIRECTORY+"user.csv",'r') as csvinput:
-		with open(DIRECTORY+"user1.csv", 'w') as csvoutput:
-			writer = csv.writer(csvoutput, delimiter="|")
-			for row in csv.reader(csvinput, delimiter="|"):
-				if row[0] in user_profile:
-					writer.writerow(row+[user_profile[row[0]]])
-				else:
-					writer.writerow(row+[0])
+    with open(DIRECTORY+"user.csv",'r') as csvinput:
+        with open(DIRECTORY+"user1.csv", 'w') as csvoutput:
+            writer = csv.writer(csvoutput, delimiter="|")
+            for row in csv.reader(csvinput, delimiter="|"):
+                if row[0] in user_profile:
+                    writer.writerow(row+[user_profile[row[0]]])
+                else:
+                    writer.writerow(row+[0])
 					
     #         if obs in user_profile:
     #         	user_profile[obs][-1] = val

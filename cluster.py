@@ -134,7 +134,7 @@ if __name__ == '__main__':
   # cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask", "ql_answer", "freq_cate_answer"]
   cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask"]
 
-  df = read_data(DIRECTORY+"user.csv", columns)
+  df = read_data(DIRECTORY+"user_profile.csv", columns)
   for col in cols_to_drop:
     df.drop(col, axis=1, inplace=True)
 

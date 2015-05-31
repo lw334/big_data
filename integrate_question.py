@@ -8,7 +8,7 @@ QUES_DICT = 21
 # CATEGORY_FEATURES = [CATE_POP]
 QUES_FEATURES = [QUES_DICT]
 
-DIRECTORY = "/var/tmp/"
+DIRECTORY = "data/"
 #"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/

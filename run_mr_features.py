@@ -17,7 +17,7 @@ if __name__ == '__main__':
         
         for line in runner.stream_output():
             obs, (key, val) = job.parse_output_line(line)
-            if obs in user_profile:
+            if obs not in user_profile:
             	user_profile[obs] = [None]*18
             user_profile[obs][(key-NUM_FEATURES)] = val
 
