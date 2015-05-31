@@ -18,14 +18,14 @@ if __name__ == '__main__':
     f = open(DIRECTORY+"user.csv", "r")
     for line in f:
         l = line.strip().split("|")
-        user_profile[l[0]] = l[1:] + [None]*7
+        user_profile[l[0]] = [None]*20 + l[1:]
     f.close()
 
     print "finish loading user data"
     f = open(DIRECTORY+"question.csv", "r")
     for line in f:
         l = line.strip().split("|")
-        question_profile[l[0]] = l[1:] + [None]*2
+        question_profile[l[0]] = [None]*3 + l[1:]
     f.close()
 
     print "finish loading question data"
@@ -38,14 +38,14 @@ if __name__ == '__main__':
             obs, (key, val) = job.parse_output_line(line)
             if key == USER_LIST:
                 if obs not in user_profile:
-                    user_profile[obs] = [None]*7 + val
+                    user_profile[obs] = val + [None]*7
                 else:
-                    user_profile[obs][7:] = val
+                    user_profile[obs][:20] = val
             else:
                 if obs not in question_profile:
-                    question_profile[obs] = [None]*2 + val
+                    question_profile[obs] = val + [None]*2
                 else:
-                    question_profile[obs][2:] = val
+                    question_profile[obs][:3] = val
 
     print "start writing user"
     with open(DIRECTORY+'user.csv', 'wb') as myfile:
