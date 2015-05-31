@@ -7,13 +7,15 @@ QUES_FIRST_ANS = 1
 # question list
 QUESTION_FEATURES = [QUES_NUM_ANSWER, QUES_FIRST_ANS]
 
+DIRECTORY = "data/"
+#/../../var/tmp/xiaoruit/
+#/var/tmp/
+
 if __name__ == '__main__':
     user_profile = {}
     question_profile = {}
 
-    f = open("data/user.csv", "r")
-    # f = open("/../../var/tmp/xiaoruit/user.csv", "r")
-    # f = open("/var/tmp/xiaoruit/user.csv", "r")
+    f = open(DIRECTORY+"user.csv", "r")
     for line in f:
         l = line.strip().split("|")
         user_profile[l[0]] = l[1:] + [None]*7
@@ -33,21 +35,18 @@ if __name__ == '__main__':
                 question_profile[obs] = question_profile.get(obs, [None]*2)
                 question_profile[obs][key] = val
 
-    with open('data/user.csv', 'wb') as myfile:
-    # with open('/../../var/tmp/xiaoruit/user.csv', 'wb') as myfile:
-    # with open('/var/tmp/xiaoruit/user.csv', 'wb') as myfile:
+    with open(DIRECTORY+'user.csv', 'wb') as myfile:
         wr = csv.writer(myfile, delimiter="|")
         for i in user_profile:
             wr.writerow([i]+user_profile[i])
 
-    # with open('data/question.csv', 'wb') as myfile:
-    # # with open('/../../var/tmp/xiaoruit/question.csv', 'wb') as myfile:
-    # # with open('/var/tmp/xiaoruit/question.csv', 'wb') as myfile:
+    # with open(DIRECTORY+'question.csv', 'wb') as myfile:
     #     wr = csv.writer(myfile, delimiter="|")
     #     for i in question_profile:
     #         wr.writerow([i]+question_profile[i])
-    with open("data/question.csv",'r') as csvinput:
-        with open("data/question2.csv", 'w') as csvoutput:
+
+    with open(DIRECTORY+"question.csv",'r') as csvinput:
+        with open(DIRECTORY+"question2.csv", 'w') as csvoutput:
             writer = csv.writer(csvoutput, delimiter="|")
             for row in csv.reader(csvinput, delimiter="|"):
                 if row[0] in question_profile:

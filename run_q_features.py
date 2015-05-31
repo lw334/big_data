@@ -1,6 +1,10 @@
 from q_features import QFeatures
 import sys, csv
 
+DIRECTORY = "data/"
+#/../../var/tmp/xiaoruit/
+#/var/tmp/
+
 if __name__ == '__main__':
     user_profile = {}
 
@@ -18,8 +22,8 @@ if __name__ == '__main__':
             obs, val = job.parse_output_line(line)
             user_profile[obs] = val
 
-	with open("data/user.csv",'r') as csvinput:
-		with open("data/user1.csv", 'w') as csvoutput:
+	with open(DIRECTORY+"user.csv",'r') as csvinput:
+		with open(DIRECTORY+"user1.csv", 'w') as csvoutput:
 			writer = csv.writer(csvoutput, delimiter="|")
 			for row in csv.reader(csvinput, delimiter="|"):
 				if row[0] in user_profile:

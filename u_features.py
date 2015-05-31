@@ -5,9 +5,13 @@ NUM_ANSWER = 21
 FREQ_CATE_ANSWER = 30
 FREQ_CATE_ASK = 5
 
+DIRECTORY = "data/"
+#/../../var/tmp/xiaoruit/
+#/var/tmp/
+
 if __name__ == '__main__':
-	with open("data/user2.csv",'r') as csvinput:
-		with open("data/user3.csv", 'w') as csvoutput:
+	with open(DIRECTORY+"user2.csv",'r') as csvinput:
+		with open(DIRECTORY+"user3.csv", 'w') as csvoutput:
 			writer = csv.writer(csvoutput, delimiter="|")
 			for row in csv.reader(csvinput, delimiter="|"):
 				l = [0]*2
