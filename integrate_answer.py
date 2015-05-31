@@ -41,16 +41,16 @@ if __name__ == '__main__':
         for i in user_profile:
             wr.writerow([i]+user_profile[i])
 
-    # with open(DIRECTORY+'question.csv', 'wb') as myfile:
-    #     wr = csv.writer(myfile, delimiter="|")
-    #     for i in question_profile:
-    #         wr.writerow([i]+question_profile[i])
+    with open(DIRECTORY+'question.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, delimiter="|")
+        for i in question_profile:
+            wr.writerow([i]+question_profile[i])
 
-    with open(DIRECTORY+"question.csv",'r') as csvinput:
-        with open(DIRECTORY+"question2.csv", 'w') as csvoutput:
-            writer = csv.writer(csvoutput, delimiter="|")
-            for row in csv.reader(csvinput, delimiter="|"):
-                if row[0] in question_profile:
-                    writer.writerow(row+question_profile[row[0]])
-                else:
-                    writer.writerow(row+[None]*2)
+    # with open(DIRECTORY+"question.csv",'r') as csvinput:
+    #     with open(DIRECTORY+"question2.csv", 'w') as csvoutput:
+    #         writer = csv.writer(csvoutput, delimiter="|")
+    #         for row in csv.reader(csvinput, delimiter="|"):
+    #             if row[0] in question_profile:
+    #                 writer.writerow(row+question_profile[row[0]])
+    #             else:
+    #                 writer.writerow(row+[None]*2)
