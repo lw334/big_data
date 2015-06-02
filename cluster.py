@@ -41,7 +41,7 @@ def plot_distribution(df, bar_cols):
     if key in bar_cols:
       df.groupby(key).size().plot(kind='bar')
     else:
-      df[key].hist(bins=5)
+      df[key].hist(bins=10,range=(df[key].min(),df[key].quantile(0.9)))
     histogram_helper(key)
 
 def histogram_helper(key):
@@ -97,7 +97,7 @@ def birchcluster(X):
   return labels
 
 def tree(labels,X,df,i):
-  tree = DT()
+  tree = DT(max_depth = 4)
   tree.fit(X,labels)
   impt = tree.feature_importances_
   para = tree.get_params()
@@ -138,13 +138,13 @@ if __name__ == '__main__':
   for col in cols_to_drop:
     df.drop(col, axis=1, inplace=True)
 
-  summary_statistics(df)
+  # summary_statistics(df)
   plot_distribution(df, BINARY)
 
-  df = standardize(df)
-  df = fill_missing(df)
-  # df.to_csv(DIRECTORY+"user_clean.csv")
-  X = preprocessing(df)
+  # df = standardize(df)
+  # df = fill_missing(df)
+  # # df.to_csv(DIRECTORY+"user_clean.csv")
+  # X = preprocessing(df)
 
   # dbscan_labels = dbscan(X)
   # birch_labels = birchcluster(X)

@@ -1,16 +1,17 @@
-from parse_answer import MRParseAnswers
+from parse_answer_new import MRParseAnswers
 import sys, json, csv
 
 USER_LIST = 0
 QUESTION_LIST = 1
 
-DIRECTORY = "/var/tmp/"
+DIRECTORY = "../data/profiles/"
 #"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/
 
 if __name__ == '__main__':
     user_profile = {}
+    question_profile = {}
 
     # print "start"
     # f = open(DIRECTORY+"user.csv", "r")
@@ -34,7 +35,10 @@ if __name__ == '__main__':
         print "yielding"
         for line in runner.stream_output():
             obs, (key, val) = job.parse_output_line(line)
-            user_profile[obs] = val
+            if key == USER_LIST:
+                user_profile[obs] = val
+            else:
+                question_profile[obs] = val
             # if key == USER_LIST:
                 # if obs not in user_profile:
                 #     user_profile[obs] = [None]*20 + val
@@ -46,7 +50,7 @@ if __name__ == '__main__':
             #     else:
             #         question_profile[obs][3:] = val
 
-    # print "start writing user"
+    print "start writing user"
     # with open(DIRECTORY+'user.csv', 'wb') as myfile:
     #     wr = csv.writer(myfile, delimiter="|")
     #     for i in user_profile:
@@ -59,6 +63,16 @@ if __name__ == '__main__':
                     writer.writerow(row+[user_profile[row[0]]])
                 else:
                     writer.writerow(row+[None]*7)
+
+    print "start writing question"
+    with open(DIRECTORY+"question.csv",'r') as csvinput:
+        with open(DIRECTORY+"question1.csv", 'w') as csvoutput:
+            writer = csv.writer(csvoutput, delimiter="|")
+            for row in csv.reader(csvinput, delimiter="\t"):
+                if row[0] in question_profile:
+                    writer.writerow(row+[user_profile[row[0]]])
+                else:
+                    writer.writerow(row+[None]*2)
 
     # print "start writing question"
     # with open(DIRECTORY+'question.csv', 'wb') as myfile:
