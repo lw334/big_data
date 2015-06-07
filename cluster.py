@@ -3,8 +3,8 @@ import pandas as pd
 import json, sys
 
 from pandas import Series
-from scipy.stats import mode
-from matplotlib import pyplot as plt
+#from scipy.stats import mode
+#from matplotlib import pyplot as plt
 from sklearn.cluster import DBSCAN, Birch, KMeans, MiniBatchKMeans
 from sklearn.tree import DecisionTreeClassifier as DT
 from sklearn.tree import export_graphviz
@@ -13,7 +13,7 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.linear_model import LogisticRegression
 
 MISSING_TIME = -sys.float_info.max
-DIRECTORY = "data/"
+DIRECTORY = "/mnt/data/profiles/"
 OUTPUT_DIRECTORY = "output/"
 
 def read_data(filename, columns):
@@ -110,41 +110,41 @@ def logit(X, labels):
   return lt.coef_
 
 if __name__ == '__main__':
-  # columns = ["user_id","num_ask", "num_extension", "ql_ask", "num_cate_ask", \
-  # "freq_cate_ask", "avg_duration", "mid_duration", "min_duration",\
-  # "max_duration", "std_duration", "avg_pnt_ask", "mid_pnt_ask", "min_pnt_ask",\
-  # "max_pnt_ask", "std_pnt_ask", "avg_awd_pnt_ask", "mid_awd_pnt_ask", \
-  # "min_awd_pnt_ask","max_awd_pnt_ask", "std_awd_pnt_ask",
-  # "num_answer", "ql_answer", "avg_pnt_answer", "mid_awd_pnt_answer", \
-  # "min_awd_pnt_answer","max_awd_pnt_answer", "std_awd_pnt_answer",
-  # "num_first_answer", "num_cate_answer", "freq_cate_answer", "avg_pnt_awd_answer", \
-  # "mid_pnt_awd_answer","min_pnt_awd_answer","max_pnt_awd_answer","std_pnt_awd_answer",\
-  # "num_asker", "avg_pop_answer","mid_pop_answer","min_pop_answer","max_pop_answer",\
-  # "std_pop_answer", "avg_pop_ask","mid_pop_ask","min_pop_ask","max_pop_ask","std_pop_ask",\
-  # "asker_and_answerer", "same_freq_cate"]
-  columns = ["user_id", "num_ask", "num_extension", "ql_ask", "num_cate_ask", \
+  columns = ["user_id","num_ask", "num_extension", "ql_ask", "num_cate_ask", \
   "freq_cate_ask", "avg_duration", "mid_duration", "min_duration",\
   "max_duration", "std_duration", "avg_pnt_ask", "mid_pnt_ask", "min_pnt_ask",\
   "max_pnt_ask", "std_pnt_ask", "avg_awd_pnt_ask", "mid_awd_pnt_ask", \
-  "min_awd_pnt_ask","max_awd_pnt_ask", "std_awd_pnt_ask"]
+  "min_awd_pnt_ask","max_awd_pnt_ask", "std_awd_pnt_ask",
+  "num_answer", "ql_answer", "avg_pnt_answer", "mid_awd_pnt_answer", \
+  "min_awd_pnt_answer","max_awd_pnt_answer", "std_awd_pnt_answer",
+  "num_first_answer", "num_cate_answer", "freq_cate_answer", "avg_pnt_awd_answer", \
+  "mid_pnt_awd_answer","min_pnt_awd_answer","max_pnt_awd_answer","std_pnt_awd_answer",\
+  "num_asker", "avg_pop_answer","mid_pop_answer","min_pop_answer","max_pop_answer",\
+  "std_pop_answer", "avg_pop_ask","mid_pop_ask","min_pop_ask","max_pop_ask","std_pop_ask",\
+  "asker_and_answerer", "same_freq_cate"]
+  #columns = ["user_id", "num_ask", "num_extension", "ql_ask", "num_cate_ask", \
+ # "freq_cate_ask", "avg_duration", "mid_duration", "min_duration",\
+  #"max_duration", "std_duration", "avg_pnt_ask", "mid_pnt_ask", "min_pnt_ask",\
+  #"max_pnt_ask", "std_pnt_ask", "avg_awd_pnt_ask", "mid_awd_pnt_ask", \
+  #"min_awd_pnt_ask","max_awd_pnt_ask", "std_awd_pnt_ask"]
 
-  # BINARY = ["asker_and_answerer", "same_freq_cate"]
-  BINARY = []
+  BINARY = ["asker_and_answerer", "same_freq_cate"]
+ # BINARY = []
 
-  # cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask", "ql_answer", "freq_cate_answer"]
-  cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask"]
+  cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask", "ql_answer", "freq_cate_answer"]
+  #cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask"]
 
-  df = read_data(DIRECTORY+"user_profile.csv", columns)
+  df = read_data(DIRECTORY+"user4.csv", columns)
   for col in cols_to_drop:
     df.drop(col, axis=1, inplace=True)
 
-  # summary_statistics(df)
-  plot_distribution(df, BINARY)
+  summary_statistics(df)
+ # plot_distribution(df, BINARY)
 
-  # df = standardize(df)
-  # df = fill_missing(df)
+  df = standardize(df)
+  df = fill_missing(df)
   # # df.to_csv(DIRECTORY+"user_clean.csv")
-  # X = preprocessing(df)
+  X  = preprocessing(df)
 
   # dbscan_labels = dbscan(X)
   # birch_labels = birchcluster(X)
