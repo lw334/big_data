@@ -3,7 +3,7 @@ import sys, csv
 
 NUM_FEATURES = 28
 
-DIRECTORY = "/var/tmp/xiaoruit/"
+DIRECTORY = "/mnt/data/profiles/"
 #"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/

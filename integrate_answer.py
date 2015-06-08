@@ -4,7 +4,7 @@ import sys, json, csv
 USER_LIST = 0
 QUESTION_LIST = 1
 
-DIRECTORY = "../data/profiles/"
+DIRECTORY = "/mnt/data/profiles/"
 #"data/"
 #/../../var/tmp/xiaoruit/
 #/var/tmp/
