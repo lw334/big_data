@@ -22,6 +22,6 @@ The Python files under the home directory are the major codes used for analyzing
     - cluster.py: After having the final user profile ready, use this file to do data preprocessing and run clustering and
     decision tree algorithms.
 
-The "code/" directory contains part of the other versions of codes we used to assist with feature generation.
+The "codes/" directory contains part of the other versions of codes we used to assist with feature generation.
 
 The "test/" directory contains a small amount of sample data. Using the sample data, you can use the pre-scale-up version of code (data_exploration.py) to get a sense of what features we generated, or test the whole pipeline described above.
