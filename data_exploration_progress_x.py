@@ -17,7 +17,6 @@ ANSWERERID = 1
 POINTSSNAP = 2
 ANSWERDATE = 3
 
-
 #<------------------------------------------------------>
 
 def read_question_data(filename, data):
@@ -63,7 +62,8 @@ def read_question(filename, question_profile):
 
 #<---------------------------feature generation--------------------------------------->
 
-def question_popularity(filename, question_profile):
+
+def question_features(filename, question_profile):
 	f = open(filename,"r")
 	l = [x.strip().replace("|","\t").split("\t") for x in f.readlines()]
 	for i in l:
@@ -166,7 +166,9 @@ def corr_award_point(data, user_profile, question_profile):
 		else:
 			user_profile[user]["corr_award_point"] = None
 
+
 # <------------- features related to how a user answer questions ------------------->
+
 
 def create_answer_points(data, user_profile):
 	for user in data:
@@ -241,32 +243,32 @@ def corr_award_point_answer(data, user_profile, question_profile):
 
 
 if __name__ == '__main__':
-	# data = {}
-	# read_question_data("part-00000_question", data)
-	# read_answer_data("part-00000_answer", data)
+	data = {}
+	read_question_data("part-00000_question", data)
+	read_answer_data("part-00000_answer", data)
 
-# 	question_profile = {}
-# 	read_question("part-00000_question", question_profile)
-	# question_popularity("part-00000_answer", question_profile)
+ 	question_profile = {}
+ 	read_question("part-00000_question", question_profile)
+	question_features("part-00000_answer", question_profile)
 	
-# 	num_questions_asked(data, user_profile)
-	# points_asking(data, user_profile, "points_asker")
-	# points_asking(data, user_profile, "points_awarded")
-	# extensions(data, user_profile)
-	# creation_award_period(data, user_profile)
-	# categories_ask(data, user_profile)
-	# # popularity_ask(data, user_profile, question_profile)
-	# # corr_award_point(data, user_profile, question_profile)
-	# create_answer_points(data, user_profile)
-	# # firstAnswers(data, user_profile, question_profile)
-	# # categories_answer(data, user_profile, question_profile)
-	# # popularity_answer(data, user_profile, question_profile)
-	# # corr_award_point_answer(data, user_profile, question_profile)
+ 	num_questions_asked(data, user_profile)
+	points_asking(data, user_profile, "points_asker")
+	points_asking(data, user_profile, "points_awarded")
+	extensions(data, user_profile)
+	creation_award_period(data, user_profile)
+	categories_ask(data, user_profile)
+	popularity_ask(data, user_profile, question_profile)
+	corr_award_point(data, user_profile, question_profile)
+	create_answer_points(data, user_profile)
+	firstAnswers(data, user_profile, question_profile)
+	categories_answer(data, user_profile, question_profile)
+	popularity_answer(data, user_profile, question_profile)
+	corr_award_point_answer(data, user_profile, question_profile)
 
-# 	json.dump(data, open("data.txt","w"))
-# 	data = json.load(open("data.txt"))
-# 	json.dump(user_profile, open("user.txt","w"))
-# 	user_profile = json.load(open("user.txt"))
-# 	json.dump(question_profile, open("question.txt","w"))
-# 	question_profile = json.load(open("question.txt"))
+	json.dump(data, open("data.txt","w"))
+	# data = json.load(open("data.txt"))
+	json.dump(user_profile, open("user.txt","w"))
+	# user_profile = json.load(open("user.txt"))
+	json.dump(question_profile, open("question.txt","w"))
+	# question_profile = json.load(open("question.txt"))
 	pass
