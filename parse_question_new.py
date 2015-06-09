@@ -15,8 +15,6 @@ EXTENSION_DATE = 8
 AWARD_DATE = 9
 
 # missing value
-# use a large negative value if any information is missing
-# MISSING = -sys.float_info.max
 MISSING = None
 
 # feature list

@@ -5,9 +5,6 @@ USER_LIST = 0
 QUESTION_LIST = 1
 
 DIRECTORY = "data/"
-#"data/"
-#/../../var/tmp/xiaoruit/
-#/var/tmp/
 
 if __name__ == '__main__':
 

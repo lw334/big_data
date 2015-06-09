@@ -1,14 +1,10 @@
 from parse_question_new import MRParseQuestions
 import sys, json, csv
 
-# CATE_POP = 20
 USER_LIST = 20
 QUES_DICT = 21
 
 DIRECTORY = "/var/tmp/"
-#"data/"
-#/../../var/tmp/xiaoruit/
-#/var/tmp/
 
 if __name__ == '__main__':
 
@@ -48,13 +44,13 @@ if __name__ == '__main__':
                     question_profile[obs][:3] = val
 
     print "start writing user"
-    with open(DIRECTORY+'user.csv', 'wb') as myfile:
+    with open(DIRECTORY+'user1.csv', 'wb') as myfile:
         wr = csv.writer(myfile, delimiter="|")
         for i in user_profile:
             wr.writerow([i]+user_profile[i])
 
     print "start writing question"
-    with open(DIRECTORY+'question.csv', 'wb') as myfile:
+    with open(DIRECTORY+'question1.csv', 'wb') as myfile:
         wr = csv.writer(myfile, delimiter="|")
         for i in question_profile:
             wr.writerow([i]+question_profile[i])

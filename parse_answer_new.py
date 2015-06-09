@@ -9,8 +9,6 @@ POINTSSNAP = 2
 ANSWERDATE = 3
 
 # missing value
-# use a large negative value if any information is missing
-# MISSING = -sys.float_info.max
 MISSING = None
 
 # feature helpers

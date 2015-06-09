@@ -4,9 +4,6 @@ import sys, csv
 NUM_FEATURES = 28
 
 DIRECTORY = "/mnt/data/profiles/"
-#"data/"
-#/../../var/tmp/xiaoruit/
-#/var/tmp/
 
 if __name__ == '__main__':
     csv.field_size_limit(sys.maxsize)
@@ -30,7 +27,6 @@ if __name__ == '__main__':
 			writer = csv.writer(csvoutput, delimiter="|")
 			for row in csv.reader(csvinput, delimiter="|"):
 				if row[0] in user_profile:
-                                        print row[0]
 					writer.writerow(row+user_profile[row[0]])
 				else:
 					writer.writerow(row+[None]*18)
