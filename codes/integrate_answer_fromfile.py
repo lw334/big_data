@@ -32,8 +32,7 @@ if __name__ == '__main__':
                 tmp = [int(val[0]), [i.strip().strip('"') for i in val[val.find("[")+1:val.find("]")].split(",")]]
                 tmp += [float(i) for i in val[val.find("]")+3:].split(",")]
                 user_profile[obs] = tmp
-            else:
-            if key == QUESTION_LIST:
+            elif key == QUESTION_LIST:
                 val = val.split(",")
                 val = [int(val[0]), val[1].strip().strip('"')]
                 question_profile[obs] = val
