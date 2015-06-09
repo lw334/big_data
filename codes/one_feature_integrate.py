@@ -1,4 +1,4 @@
-from mr_cnt_answers import MRCntAnswers
+from one_feature import MRCntAnswers
 import sys
 import json
 
