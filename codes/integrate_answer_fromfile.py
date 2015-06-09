@@ -22,7 +22,6 @@ if __name__ == '__main__':
             f = open(DIRECTORY+"temp/parse_answer_new.ec2-user.20150604.195854.915961/output/part-00"+str(i))
     print "reading a file" + str(i)
         l = f.readlines()
-        l = l[:10]
         for line in l:
             line = [x.strip("'") for x in line.strip().split("\t")]
             obs = line[0].strip('"')
@@ -30,7 +29,7 @@ if __name__ == '__main__':
             val = line[1].strip("[").strip("]")[4:]
             if key == USER_LIST:
                 tmp = [int(val[0]), [i.strip().strip('"') for i in val[val.find("[")+1:val.find("]")].split(",")]]
-                tmp += [float(i) for i in val[val.find("]")+3:].split(",")]
+                tmp += [i.strip() for i in val[val.find("]")+3:].split(",")]
                 user_profile[obs] = tmp
             elif key == QUESTION_LIST:
                 val = val.split(",")
