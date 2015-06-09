@@ -13,7 +13,7 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.linear_model import LogisticRegression
 
 MISSING_TIME = -sys.float_info.max
-DIRECTORY = "/mnt/data/profiles/"
+DIRECTORY = "/var/tmp/xiaoruit/"
 OUTPUT_DIRECTORY = "output/"
 
 def read_data(filename, columns):
@@ -122,17 +122,10 @@ if __name__ == '__main__':
   "num_asker", "avg_pop_answer","mid_pop_answer","min_pop_answer","max_pop_answer",\
   "std_pop_answer", "avg_pop_ask","mid_pop_ask","min_pop_ask","max_pop_ask","std_pop_ask",\
   "asker_and_answerer", "same_freq_cate"]
-  #columns = ["user_id", "num_ask", "num_extension", "ql_ask", "num_cate_ask", \
- # "freq_cate_ask", "avg_duration", "mid_duration", "min_duration",\
-  #"max_duration", "std_duration", "avg_pnt_ask", "mid_pnt_ask", "min_pnt_ask",\
-  #"max_pnt_ask", "std_pnt_ask", "avg_awd_pnt_ask", "mid_awd_pnt_ask", \
-  #"min_awd_pnt_ask","max_awd_pnt_ask", "std_awd_pnt_ask"]
 
   BINARY = ["asker_and_answerer", "same_freq_cate"]
- # BINARY = []
 
   cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask", "ql_answer", "freq_cate_answer"]
-  #cols_to_drop = ["user_id", "ql_ask", "freq_cate_ask"]
 
   df = read_data(DIRECTORY+"user4.csv", columns)
   for col in cols_to_drop:
@@ -149,11 +142,12 @@ if __name__ == '__main__':
   # dbscan_labels = dbscan(X)
   # birch_labels = birchcluster(X)
   # kmean_labels = kmeans(X, 4)
-  # mbk_labels = minibatchkmeans(X, 4)
+  mbk_labels = minibatchkmeans(X, 4)
 
   # labels = [dbscan_labels, birch_labels, kmean_labels, mbk_labels]
-  # importance = pd.DataFrame(columns=pd.Series(df.columns))
-  # for i in range(len(labels)):
-  #   importance.loc[i] = tree(labels[i], X, df, i)
-  # importance.to_csv(OUTPUT_DIRECTORY+"feature_importance.csv")
-  # print importance
+  labels = [mbk_labels]
+  importance = pd.DataFrame(columns=pd.Series(df.columns))
+  for i in range(len(labels)):
+    importance.loc[i] = tree(labels[i], X, df, i)
+  importance.to_csv(OUTPUT_DIRECTORY+"feature_importance.csv")
+  print importance
