@@ -19,17 +19,20 @@ MAX = 3
 STD = 4
 
 # feature list
-NUM_ANSWER = 20
-Q_ANSWER = 21
-PNT_ANSWER = 22
-QUES_NUM_ANSWER = 0
-QUES_FIRST_ANS = 1
+NUM_ANSWER = 0
+Q_ANSWER = 1
+PNT_ANSWER = 2
+QUES_NUM_ANSWER = 3
+QUES_FIRST_ANS = 4
 
 # user list
 USER_FEATURES = [NUM_ANSWER, PNT_ANSWER, Q_ANSWER]
 
 # question list
 QUESTION_FEATURES = [QUES_NUM_ANSWER, QUES_FIRST_ANS]
+
+USER_LIST = 0
+QUESTION_LIST = 1
 
 # helper functions
 def list_helper(l):
@@ -75,7 +78,7 @@ class MRParseAnswers(MRJob):
       if key in USER_FEATURES:
         is_user = True
       # for sums
-      if key in [NUM_ANSWER, QUES_NUM_ANSWER]:
+      if key in [NUM_ANSWER]:
         dic[key] += val
       # for min
       elif key in [QUES_FIRST_ANS]:
@@ -85,7 +88,7 @@ class MRParseAnswers(MRJob):
       elif key in [PNT_ANSWER, Q_ANSWER]:
         yield obs, (key, val)
     if is_user:
-        yield obs, (NUM_ANSWER, dic[NUM_ANSWER])
+      yield obs, (NUM_ANSWER, dic[NUM_ANSWER])
     else:
         yield obs, (QUES_NUM_ANSWER, dic[QUES_NUM_ANSWER])
         yield obs, (QUES_FIRST_ANS, dic[QUES_FIRST_ANS])
@@ -95,7 +98,6 @@ class MRParseAnswers(MRJob):
     dic = {NUM_ANSWER: 0, QUES_NUM_ANSWER: 0, \
           QUES_FIRST_ANS: (" ", sys.maxint), Q_ANSWER: []}
     temp = []
-    is_user = False
     for key, val in l:
       if key in USER_FEATURES:
         is_user = True
@@ -111,13 +113,14 @@ class MRParseAnswers(MRJob):
     temp = filter(lambda x: x==x, temp)
     point_features = list_helper(temp)
     if is_user:
-      yield obs, (NUM_ANSWER, dic[NUM_ANSWER])
+      user_list = [None]*7
+      user_list[NUM_ANSWER] = dic[NUM_ANSWER]
       for key in point_features:
-        yield obs, (PNT_ANSWER+key, point_features[key])
-      yield obs, (Q_ANSWER, dic[Q_ANSWER])
+        user_list[PNT_ANSWER+key] = point_features[key]
+      user_list[Q_ANSWER] = dic[Q_ANSWER]
+      yield obs, (USER_LIST, user_list)
     else:
-      yield obs, (QUES_NUM_ANSWER, dic[QUES_NUM_ANSWER])
-      yield obs, (QUES_FIRST_ANS, dic[QUES_FIRST_ANS][0])
+      yield obs, (QUESTION_LIST, [dic[QUES_NUM_ANSWER], dic[QUES_FIRST_ANS]])
 
 if __name__ == '__main__':
   MRParseAnswers.run()
